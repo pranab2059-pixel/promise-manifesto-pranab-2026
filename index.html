@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<title>Promise Day – Love Manifesto ❤️</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        color: #4a0033;
+        text-align: center;
+        padding: 20px;
+        overflow-x: hidden;
+    }
+
+    .card {
+        background: white;
+        padding: 30px 25px;
+        border-radius: 25px;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        animation: fadeIn 1s;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 18px;
+        line-height: 1.6;
+        min-height: 120px;
+        white-space: pre-line;
+    }
+
+    button {
+        margin-top: 25px;
+        padding: 15px 35px;
+        border: none;
+        border-radius: 30px;
+        background: #e60073;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #c40061;
+    }
+
+    .hearts {
+        position: absolute;
+        font-size: 30px;
+        animation: floatUp 4s linear infinite;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+        opacity: 0.8;
+        pointer-events: none;
+        z-index: 9999;
+        animation: confettiFall 3s linear forwards;
+    }
+
+    .progress-container {
+        width: 100%;
+        background-color: #f3f3f3;
+        border-radius: 20px;
+        margin-top: 15px;
+        height: 20px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background-color: #ff6f91;
+        border-radius: 20px;
+        transition: width 0.5s ease;
+    }
+
+    .quiz-button {
+        margin: 5px;
+        background: #ff6f91;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .quiz-button:hover {
+        background: #d94f72;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 1;} 100% { transform: translateY(-400px) rotate(360deg); opacity: 0;} }
+    @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(600px) rotate(720deg); opacity: 0; } }
+
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+    <h1 id="title">Promise Day ❤️</h1>
+    <p id="text">
+सावधान Niru! 😘<br>
+तिमीले मेरो maya ko “Test of Love” पास गर्नुपर्छ।<br>
+Full Score: 100 💖 Pass Score: 100 💝<br>
+तिमीभन्दा माया गर्ने कोई छैन भन्ने साबित गर्न आजको challenge!<br>
+तयार छौ?
+    </p>
+    <button id="nextBtn" onclick="nextPromise()">Yes, I am ready 💖</button>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+</div>
+
+<script>
+const promises = [
+`पहिला सानो कुरा ❤️
+यो manifesto माया कम भएकोले होइन,
+tmi sanga future sangai bitaune rahar le ho।
+तिमी जस्ती छ्यौ, त्यस्तै भएर पनि म तिमीलाई रोज्छु।`,
+`🌹 मेरा तिमीबाट अपेक्षा 1
+म सबैभन्दा माया गरेको महसुस taba गर्छु,
+जब तिमी खुलेर आफ्ना कुरा मसँग बाँड्छ्यौ।`,
+`2
+टाढा भए पनि,
+सानो मेसेज वा फोनले मलाई धेरै नजिक महसुस गराउँछ।`,
+`3
+कहिलेकाहीँ शब्दभन्दा,
+तिम्रो ध्यान र समय नै मेरो लागि important हुन्छ।`,
+`4
+म tmro harek emotion चाहन्छु—
+खुसी मात्र होइन, दुख पनि।`,
+`5
+म गल्ती गर्दा,
+रिसभन्दा पहिला बुझ्ने प्रयास गरिदेऊ।`,
+`6 (Please)
+माया देखाउने तरिका फरक हुन सक्छ,
+तर मेरो प्रयासलाई पनि महसुस गरिदेऊ।`,
+`7
+शान्त भएर कुरा गर्दा,
+हाम्रो सम्बन्ध अझ बलियो हुन्छ भन्ने मेरो विश्वास छ।`,
+`8
+मलाई तिमीबाट भरोसा चाहिन्छ—
+शब्दमा मात्र होइन, व्यवहारमा पनि।`,
+`9 (Please focus more on this)
+तिमी व्यस्त हुँदा पनि,
+म तिम्रो प्राथमिकता हुँ भन्ने अनुभूति पाउन चाहन्छु।`,
+`10
+सबैभन्दा ठूलो अपेक्षा—
+कठिन समयमा पनि, तिमी मेरो साथ naxodnu।`,
+`🌱 हामीले सँगै सुधार गर्न सक्ने कुरा 
+1
+Jhagada huda,
+चुप लागेर होइन, कुरा गरेर समाधान गरौँ।`,
+`2
+रिसको बेला,
+शब्दहरू सोचेर प्रयोग गरौँ।`,
+`3
+सानो कुरामा पनि,
+एक–अर्काको भावना सम्मान गरौँ।`,
+`4 (maya xa bhane sabai dekhau)
+माया भन्न लाज नमानी,
+खुलेर व्यक्त गरौँ।`,
+`5 (yo hamro jhagada ko main reaon ho so please bujhnu)
+हाम्रा फरक सोचलाई,
+झगडाको कारण होइन, सिकाइ बनाऔँ।`,
+`6
+एक–अर्काको situation,
+बुझेर स्वीकार गरौँ।`,
+`7
+गुनासोभन्दा अगाडि,
+appreciation व्यक्त गरौँ।`,
+`8
+समस्या हुँदा,
+दोष होइन, समाधान खोजौँ।`,
+`9
+एक–अर्काको सपना र लक्ष्यमा,
+साथ दिऔँ।`,
+`10
+सधैं सँगै बढ्ने प्रयास गरौँ।`,
+`🤍 अन्तिम प्रतिज्ञा
+म तिमीलाई बदल्न चाहन्न,
+म तिमी सँगै बढ्न चाहन्छु।
+यो manifesto नियम होइन,
+माया र समझदारीको प्रतिज्ञा हो।
+Promise Day मा मेरो वाचा—
+जस्तो परिस्थिति आए पनि,
+म तिमीलाई रोजिरहनेछु। ❤️`
+];
+
+// Points distribution
+const totalPromises = promises.length; // 26
+const totalQuizzes = 10;
+const totalPoints = 100; // max score
+const promisePoints = 20; // 20 points out of 100
+const quizPoints = totalPoints - promisePoints; // 80 points
+
+let index = 0;
+let score = 0;
+
+function nextPromise() {
+    const titleEl = document.getElementById("title");
+    const textEl = document.getElementById("text");
+    const btn = document.getElementById("nextBtn");
+    const progressBar = document.getElementById("progressBar");
+
+    if(index < promises.length){
+        titleEl.innerText = "Promise " + (index + 1);
+        textEl.innerText = promises[index];
+
+        // Fun hints
+        if(index === 5) textEl.innerText += "\n\n💌 Almost there… Keep going!";
+        if(index === 12) textEl.innerText += "\n\n💌 Are you tired? Hold tight, surprise coming!";
+        if(index === 20) textEl.innerText += "\n\n💌 Just a few more… you can do it! 💖";
+
+        index++;
+        score += promisePoints / totalPromises; // proportional points
+
+        createHearts();
+
+        // Update progress
+        let progressPercent = Math.floor((score / totalPoints) * 100);
+        progressBar.style.width = progressPercent + "%";
+    } else {
+        showQuiz();
+    }
+}
+
+// Heart animation
+function createHearts() {
+    const heart = document.createElement('div');
+    heart.className = 'hearts';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.innerText = '💖';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),4000);
+}
+
+// Quiz questions
+const quizQuestions = [
+    {q: "मेरो मनपर्ने रंग कुन हो?", options:["blue","black","red","white"], answer:"black"},
+    {q: "मेरो मनपर्ने खाना?", options:["पिज्जा","मोमो","सेतो भात","चाउमिन"], answer:"मोमो"},
+    {q: "मेरो मनपर्ने फल?", options:["mango","watermelon","orange","grapes"], answer:"mango"},
+    {q: "मेरो मनपर्ने गीत शैली?", options:["Pop","Rap with inspiration","Classical","Hip-hop"], answer:"Rap with inspiration"},
+    {q: "मेरो मनपर्ने Country?", options:["Australia","Nepal","India","Switzerland"], answer:"Nepal"},
+    {q: "म बढी चिया कि कफी पिउँछु?", options:["Tea","Coffee","दुवै","केही पनि होइन"], answer:"Coffee"},
+    {q: "मेरो मनपर्ने फिल्म genre?", options:["Comedy","Romantic","Motivational","Action"], answer:"Romantic"},
+    {q: "म यात्रा गर्न मन पराउँछु कि घरमै बस्न?", options:["यात्रा","घर","दुवै(Depends on mood)","कहिले कहिले"], answer:"दुवै(Depends on mood)"},
+    {q: "मेरो मनपर्ने फूल?", options:["rose","lavender","sunflower","lily"], answer:"rose"},
+    {q: "Ma badi maya garxu ki tmi?", options:["Pranab le badi","Niru le badi","दुवै le same","Pranab le 0.1% badi"], answer:"Niru le badi"}	
+];
+
+let quizIndex = 0;
+
+function showQuiz() {
+    const card = document.getElementById("card");
+    const titleEl = document.getElementById("title");
+    const textEl = document.getElementById("text");
+    const progressBar = document.getElementById("progressBar");
+
+    titleEl.innerText = "💖 Quiz of Love " + (quizIndex + 1);
+    textEl.innerHTML = quizQuestions[quizIndex].q + "<br><br>";
+
+    quizQuestions[quizIndex].options.forEach(opt => {
+        const b = document.createElement("button");
+        b.className = "quiz-button";
+        b.innerText = opt;
+        b.onclick = () => checkAnswer(opt);
+        textEl.appendChild(b);
+    });
+
+    progressBar.style.width = Math.floor((score / totalPoints) * 100) + "%";
+    document.getElementById("nextBtn").style.display="none";
+}
+
+function checkAnswer(selected){
+    if(selected === quizQuestions[quizIndex].answer){
+        score += quizPoints / totalQuizzes; // 80 points divided equally among 10 quizzes
+    }
+
+    quizIndex++;
+    if(quizIndex < quizQuestions.length){
+        showQuiz();
+    } else {
+        showFinalScore();
+    }
+}
+
+function showFinalScore(){
+    const titleEl = document.getElementById("title");
+    const textEl = document.getElementById("text");
+    const progressBar = document.getElementById("progressBar");
+
+    if(score > totalPoints) score = totalPoints; // normalize max 100
+    progressBar.style.width="100%";
+
+    if(score === totalPoints){
+        titleEl.innerText = "🎉 Test of Love Complete!";
+        textEl.innerText = `Congratulations! 💖\nतिमीले मेरो प्यारको सम्पूर्ण टेस्ट पास गर्यौ।\nFull Score: ${score}/100 💝\n\nHappy Promise Day Niru! 💕`;
+        triggerConfetti();
+    } else {
+        titleEl.innerText = "Oops… Almost There 😅";
+        let comment = "";
+        if(score < 50){
+            comment = "Are you even trying? 😜\nDon't worry, I'll forgive you… this time 💖";
+        } else if(score < 80){
+            comment = "Hmm… not bad, but my heart is still waiting 😏\nTry again, you can do it!";
+        } else {
+            comment = "Almost perfect! 😘\nSo close, but you need a little more love magic 💝";
+        }
+        textEl.innerText = `You scored ${Math.round(score)}/100\n${comment}\n\nClick below to try again! 💌`;
+
+        const retryBtn = document.createElement("button");
+        retryBtn.innerText = "Retry Test 💖";
+        retryBtn.onclick = () => location.reload();
+        textEl.appendChild(document.createElement("br"));
+        textEl.appendChild(retryBtn);
+    }
+}
+
+// Confetti animation
+function triggerConfetti() {
+    const colors = ["#f94144","#f3722c","#f9c74f","#90be6d","#577590","#43aa8b","#9b5de5"];
+    for(let i=0;i<150;i++){
+        const confetti = document.createElement('div');
+        confetti.className='confetti';
+        confetti.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+        confetti.style.left=Math.random()*window.innerWidth+'px';
+        confetti.style.top='-10px';
+        confetti.style.width=(Math.random()*8+5)+'px';
+        confetti.style.height=confetti.style.width;
+        confetti.style.opacity=Math.random()+0.5;
+        confetti.style.transform=`rotate(${Math.random()*360}deg)`;
+        document.body.appendChild(confetti);
+        setTimeout(()=>confetti.remove(),3000);
+    }
+}
+</script>
+
+</body>
+</html>
